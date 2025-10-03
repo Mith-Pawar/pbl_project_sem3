@@ -4,11 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple HTML document.</p>
-    <h2>this is sachin</h2>
-    <button>Click Me!</button>
+    <nav class="navbar">
+        <a href="#">HOME</a>
+        <a href="#">LOGIN</a>
+        <a href="#">PROFILE</a>
+        <a href="#">STATS</a>
+    </nav>
+    
+    <!-- Overlay HTML -->
+    <div class="overlay">
+        <h1>FOCUS FIT</h1>
+        <h2>Boost Your Focus </h2>
+        <p>Train your brain to stay Sharp, Motivated, and Distraction-free with fun Exercises</p>
+        <p>Sharp, Motivated, and Distraction-free with fun Exercises</p>
+        <button class="start-button"><span>Get Started</span></button>
+        
+    </div>
+<!-- Counter directly below the button -->
+        <div class="user-counter">
+            <span id="counter">0</span> users joined
+        </div>
+    <div id="three-container" style="width:100vw; height:805px;"></div>
+    <hr>
+    <div class="footer">
+      <pre>“FocusFit is a platform dedicated to helping teenagers improve their focus,
+         productivity, and mental clarity through science-backed techniques,
+          engaging tools, and mindful practices.”</pre>
+      <p>“Your mind is your superpower. Train it, and unlock your full potential.”</p>
+    <a href="https://mail.google.com/mail/u/0/#inbox"><h4>📧 mithpawar58@gmail.com</h4></a>
+     <a href="https://www.instagram.com/focus_fit6/"><h4>Instagram Id-FOCUS_FIT</h4></a>
+      <h4>📍 Location: Mumbai, India</h4>
+      
+
+      <h4>📞 Contact +91 9876124345</h4>
+    </div>
+     <!-- Importmap must be inside a script tag -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.179.1/build/three.module.js",
+        "three/examples/jsm/loaders/GLTFLoader.js": "https://unpkg.com/three@0.179.1/examples/jsm/loaders/GLTFLoader.js",
+        "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three@0.179.1/examples/jsm/controls/OrbitControls.js"
+      }
+    }
+    </script>
+    
+    <script type="module" src="script.js"></script>
+
+    <div id="login-modal" class="login-modal">
+  <div class="login-box">
+    <h2>Login</h2>
+    <form>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+    <button id="close-login" class="close-btn">&times;</button>
+  </div>
+</div>
 </body>
 </html>

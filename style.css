@@ -1,0 +1,514 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: black; /* light background for the page */
+  color: white;
+  padding-top: 60px; /* Add this line */
+}
+
+/* Navbar */
+.navbar {
+  height: 60px;
+  width: 100%;
+  background: linear-gradient(90deg, #0d0d0d, #1a1a1a); /* black navbar */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid #222;
+  position: fixed; /* stays on top */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 255, 247, 0.2), 0 0 8px #00fff733; /* subtle glow */
+}
+
+/* Navbar items */
+.navbar a {
+  color: #e0e0e0;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+  font-size: 1rem;
+}
+
+
+.navbar a:hover {
+  color: #00fff7; 
+}
+
+
+.navbar a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -5px;
+  background-color: #00fff7;
+  transition: width 0.3s ease;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+
+.overlay {
+  position: absolute;
+  top: 120px;
+  left: 40px; /* add some left margin */
+  width: 40vw; /* make overlay narrower for left alignment */
+  text-align: left; /* left align text */
+  color: #f5f5f5; /* light text for dark theme */
+  background: rgba(20, 20, 40, 0.85); /* dark semi-transparent background */
+  border-radius: 12px;
+  padding: 32px 32px 24px 32px;
+  z-index: 10;
+  pointer-events: none;
+  border: 2px solid #00fff7;
+  box-shadow:
+    0 0 24px 2px #00fff755,
+    0 4px 24px rgba(0,255,247,0.15),
+    0 0 0 4px rgba(0,255,247,0.07) inset;
+  cursor: pointer;
+}
+
+.overlay h1 {
+  font-size: 2.5rem;
+  margin: 0.5em 0 0.2em 0;
+  color: #00fff7; /* accent color for heading */
+  letter-spacing: 2px;
+}
+
+.overlay h2 {
+  font-size: 1.5rem;
+  margin: 0.2em 0 0.5em 0;
+  color: #fff;
+  font-weight: 400;
+}
+
+.overlay p {
+  font-size: 1.1rem;
+  margin: 0.5em 0 0 0;
+  color: #e0e0e0;
+  
+}
+
+.start-button {
+  margin-top: 24px;
+  padding: 14px 36px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #00fff7;
+  background: linear-gradient(90deg, #181848 60%, #00fff7 100%);
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 4px 24px rgba(0,255,247,0.15);
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.start-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  padding: 2px;
+  background: linear-gradient(120deg, #00fff7, #181848, #00fff7);
+  background-size: 200% 200%;
+  animation: borderGlow 2s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.start-button span {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.start-button:hover, .start-button:focus {
+  background: linear-gradient(90deg, #00fff7 0%, #181848 100%);
+  color: #181848;
+  box-shadow: 0 6px 32px rgba(0,255,247,0.25);
+  outline: none;
+}
+
+/* Add a subtle animated grid to the background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(0deg, rgba(0, 255, 247, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 247, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridMove 8s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 40px 40px, 40px 40px; }
+}
+
+/* Glowing border for .user-counter */
+.user-counter {
+  position: absolute;
+  top: 400px; /* adjust as needed to appear below overlay */
+  
+  left: 40px;
+  font-size: 2rem;
+  color: #00fff7;
+  font-weight: 600;
+  background: rgba(20, 20, 40, 0.85);
+  padding: 12px 32px;
+  border-radius: 10px;
+  z-index: 11;
+  border: 2px solid #00fff7;
+  box-shadow:
+    0 0 16px 2px #00fff7aa,
+    0 4px 24px rgba(0,255,247,0.10);
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+/* Navbar item glow on hover */
+.navbar a:hover {
+  text-shadow: 0 0 8px #00fff7, 0 0 2px #fff;
+}
+
+/* Add a subtle glow to headings */
+.overlay h1, .overlay h2 {
+  text-shadow: 0 0 8px #00fff7cc, 0 0 2px #fff;
+}
+
+/* Optional: glowing focus ring for accessibility */
+.start-button:focus-visible {
+  outline: 2px solid #00fff7;
+  box-shadow: 0 0 0 4px #00fff755;
+}
+
+/* --- Login Modal Improvements --- */
+
+/* Center the login modal on all screen sizes */
+.login-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.97);
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+/* Smooth fade-in for modal */
+.login-modal.active {
+  display: flex;
+  animation: modalFadeIn 0.3s;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive login box */
+.login-box {
+  background: #181818;
+  border-radius: 18px;
+  padding: 40px 32px 32px 32px;
+  box-shadow: 0 0 32px #00fff733, 0 2px 32px #000a;
+  min-width: 320px;
+  max-width: 90vw;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  border: 2px solid #00fff7;
+  animation: boxPop 0.4s;
+}
+@keyframes boxPop {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.login-box h2 {
+  color: #00fff7;
+  margin-bottom: 24px;
+  text-align: center;
+  letter-spacing: 2px;
+  font-size: 2rem;
+  text-shadow: 0 0 8px #00fff7cc, 0 0 2px #fff;
+}
+
+.login-box label {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+.login-box input {
+  margin-bottom: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #222;
+  background: #23233a;
+  color: #fff;
+  font-size: 1.08rem;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #00fff71a;
+}
+
+.login-box input:focus {
+  border: 1.5px solid #00fff7;
+  box-shadow: 0 0 8px #00fff7cc;
+}
+
+.login-btn {
+  margin-top: 22px;
+  padding: 13px 0;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #00fff7 0%, #181848 100%);
+  color: #181848;
+  font-weight: 700;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 16px #00fff733;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-btn:hover, .login-btn:focus {
+  background: linear-gradient(90deg, #181848 0%, #00fff7 100%);
+  color: #00fff7;
+  box-shadow: 0 4px 24px #00fff7aa;
+  outline: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  color: #00fff7;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 2;
+}
+
+.close-btn:hover {
+  color: #fff;
+}
+
+/* Show password toggle */
+.login-box .show-password {
+  margin-top: 6px;
+  color: #00fff7;
+  font-size: 0.95rem;
+  cursor: pointer;
+  user-select: none;
+  align-self: flex-end;
+  transition: color 0.2s;
+}
+.login-box .show-password:hover {
+  color: #fff;
+}
+
+/* Error message styling */
+.login-box .error-message {
+  color: #ff4d4d;
+  font-size: 0.98rem;
+  margin-top: 10px;
+  text-align: center;
+  display: none;
+}
+
+/* Make modal scrollable on small screens */
+@media (max-width: 500px) {
+  .login-box {
+    padding: 24px 8vw 24px 8vw;
+    min-width: unset;
+    max-width: 98vw;
+  }
+}
+/* Make inputs full width and stacked */
+.login-box form {
+  display: flex;
+  flex-direction: column; /* vertical stacking */
+  gap: 16px; /* space between inputs */
+}
+
+.login-box input {
+  width: 100%; /* full width of parent */
+  box-sizing: border-box; /* padding included in width */
+}
+.login-box {
+  background: #181818;
+  border-radius: 18px;
+  padding: 32px 24px;
+  box-shadow: 0 0 32px #00fff733, 0 2px 32px #000a;
+  width: 360px;       /* Fixed width */
+  max-width: 90vw;    /* For small screens */
+  min-width: 280px;   /* Never too small */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  border: 2px solid #00fff7;
+  animation: boxPop 0.4s;
+}
+/* Overlay text only, no box or border */
+.overlay {
+  position: absolute;
+  top: 44%;
+  left: 10%;
+  transform: translateY(-50%);
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: none;       /* no background */
+  border: none;           /* no border */
+  box-shadow: none;       /* remove shadow */
+  pointer-events: auto;   /* clickable buttons */
+  z-index: 10;
+}
+
+/* Headings with neon glow for visibility */
+.overlay h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  color: #00fff7; 
+  text-shadow: 0 0 8px #00fff7aa, 0 0 4px #00fff7cc;
+}
+
+.overlay h2 {
+  font-size: 1.6rem;
+  color: #00d9f5;
+  text-shadow: 0 0 6px #00d9f5aa;
+}
+
+.overlay p {
+  font-size: 1rem;
+  color: #a0f5f5;
+  line-height: 1.4;
+  text-shadow: 0 0 4px #00f5f5aa;
+}
+
+/* Button styling remains visible */
+.start-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #00f5a0, #00d9f5);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.start-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #00fff7aa, 0 0 6px #00f5a0aa;
+}
+
+
+/* Headings with subtle glow */
+.overlay h1 {
+  font-size: 2.8rem;
+  margin: 0;
+  color: #00fff7; /* neon cyan glow */
+  text-shadow: 0 0 6px #00fff7aa, 0 0 2px #00fff7cc;
+}
+
+.overlay h2 {
+  font-size: 1.6rem;
+  color: #00d9f5;
+  text-shadow: 0 0 4px #00d9f5aa;
+}
+
+.overlay p {
+  font-size: 1rem;
+  color: #a0f5f5;
+  line-height: 1.4;
+  text-shadow: 0 0 4px #00f5f5aa;
+}
+
+/* Button styling - still visible and modern */
+.start-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #00f5a0, #00d9f5);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.start-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #00fff7aa, 0 0 6px #00f5a0aa;
+}
+
+/* Counter styling below overlay */
+.user-counter {
+  position: absolute;
+  top: calc(50% + 260px); /* adjust relative to overlay */
+  left: 10%;
+  font-size: 1.8rem;
+  color: #00fff7;
+  font-weight: 600;
+  background: rgba(18, 18, 18, 0.85); /* match scene background */
+  padding: 10px 25px;
+  border-radius: 10px;
+  z-index: 11;
+  box-shadow: none; /* remove glowy border */
+  letter-spacing: 1px;
+}
+.start-button {
+  padding: 14px 32px;       /* slightly bigger */
+  font-size: 1.15rem;       /* text slightly bigger */
+  font-weight: 600;
+  color: #00fff7;           /* neon text */
+  background: #000;         /* solid black background */
+  
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+.footer{
+  text-align: center;
+  background-color: #000;
+  color: white;
+}
+
+pre{
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 20px;
+
+}
+
+  
+
