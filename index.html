@@ -57,12 +57,17 @@
     <div id="login-modal" class="login-modal">
   <div class="login-box">
     <h2>Login</h2>
-    <form>
+    <form id="login-form">
       <label for="username">Username</label>
       <input type="text" id="username" name="username" autocomplete="username" required>
       <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="current-password" required>
       <button type="submit" class="login-btn">Login</button>
+
+      <div class="signup-row">
+        <p>Don't have account?</p>
+        <button type="button" id="open-register" class="login-btn">Sign Up</button>
+      </div>
     </form>
     <button id="close-login" class="close-btn">&times;</button>
   </div>

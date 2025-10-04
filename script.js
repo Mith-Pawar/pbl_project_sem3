@@ -29,11 +29,13 @@ let heroY = 0; // Default value
 const counterElement = document.getElementById('counter');
 
 function animateCounterPulse() {
+  if (!counterElement) return;
   const scale = 1 + Math.sin(Date.now() * 0.005) * 0.05;
   counterElement.style.transform = `scale(${scale})`;
   requestAnimationFrame(animateCounterPulse);
 }
-animateCounterPulse();
+
+if (counterElement) animateCounterPulse();
 
 function animateCounter(element, start, end, duration) {
   let startTimestamp = null;
@@ -105,6 +107,16 @@ document.querySelector('.navbar a:nth-child(2)').addEventListener('click', funct
   document.getElementById('login-modal').classList.add('active');
 });
 
+// If URL contains #login (for example after registration), open the login modal automatically
+if (window.location.hash === '#login') {
+  const loginModal = document.getElementById('login-modal');
+  if (loginModal) {
+    loginModal.classList.add('active');
+    // remove the hash without affecting history too much
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+}
+
 // Hide login modal on close button click
 document.getElementById('close-login').addEventListener('click', function() {
   document.getElementById('login-modal').classList.remove('active');
@@ -116,6 +128,17 @@ document.getElementById('login-modal').addEventListener('click', function(e) {
     this.classList.remove('active');
   }
 });
+
+// Open register page when Sign Up button is clicked inside login modal
+
+const openRegisterBtn = document.getElementById('open-register');
+
+if (openRegisterBtn) {
+  openRegisterBtn.addEventListener('click', function() {
+    // Navigate to register.html (will use same styling)
+    window.location.href = 'register.html';
+  });
+}
 
 
 
