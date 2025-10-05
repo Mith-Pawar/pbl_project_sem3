@@ -139,6 +139,9 @@ if (openRegisterBtn) {
     window.location.href = 'register.html';
   });
 }
-
-
+const loginBtn=document.querySelector('.login-btn');
+loginBtn.addEventListener('click',(e)=>{
+  e.preventDefault();
+  window.location.href='getstarted.html';
+});
 
