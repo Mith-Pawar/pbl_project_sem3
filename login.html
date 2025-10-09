@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - FocusFit</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html">HOME</a>
+    <a href="#">LOGIN</a>
+    <a href="#">PROFILE</a>
+    <a href="#">STATS</a>
+  </nav>
+
+  <div class="login-modal active" style="background: rgba(0,0,0,0.98);">
+    <div class="login-box">
+      <h2>Login</h2>
+      <div class="error-message" id="login-error" style="display:none;margin-top:6px;text-align:center;">something went wrong, try again</div>
+      <form id="login-form-page">
+        <label for="page-email">Email</label>
+        <input id="page-email" type="email" required />
+        <label for="page-password">Password</label>
+        <input id="page-password" type="password" required />
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+      <a href="register.html" style="text-align:center;margin-top:12px;color:#00fff7;display:block;">Create an account</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('login-form-page').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const err = document.getElementById('login-error');
+      err.style.display = 'none';
+      const email = document.getElementById('page-email').value.trim();
+      const password = document.getElementById('page-password').value;
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          err.textContent = data.error || 'Login failed';
+          err.style.display = 'block';
+          return;
+        }
+        // success
+        if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+        window.location.href = 'index.html';
+      } catch (err) {
+        console.error(err);
+        err.textContent = 'Network error';
+        err.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

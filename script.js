@@ -107,6 +107,25 @@ document.querySelector('.navbar a:nth-child(2)').addEventListener('click', funct
   document.getElementById('login-modal').classList.add('active');
 });
 
+// If "Login" button on the landing page is clicked, open the same login modal as the navbar
+const gotoLoginBtn = document.getElementById('goto-login');
+if (gotoLoginBtn) {
+  gotoLoginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+      // open the modal (same behavior as navbar LOGIN)
+      loginModal.classList.add('active');
+      // ensure focus on first input for better UX
+      const firstInput = loginModal.querySelector('input');
+      if (firstInput) firstInput.focus();
+    } else {
+      // fallback to full page if modal isn't present
+      window.location.href = 'login.html';
+    }
+  });
+}
+
 // If URL contains #login (for example after registration), open the login modal automatically
 if (window.location.hash === '#login') {
   const loginModal = document.getElementById('login-modal');
@@ -116,6 +135,75 @@ if (window.location.hash === '#login') {
     history.replaceState(null, '', window.location.pathname + window.location.search);
   }
 }
+
+  // Show welcome in navbar when user is logged in
+  function updateNavbarForUser() {
+    try {
+      const raw = localStorage.getItem('user');
+      const navLogin = document.getElementById('nav-login');
+      const navWelcome = document.getElementById('nav-welcome');
+      if (!navLogin || !navWelcome) return;
+      if (raw) {
+        const user = JSON.parse(raw);
+        navLogin.style.display = 'none';
+        navWelcome.style.display = 'inline-block';
+        navWelcome.textContent = `Welcome, ${user.name || user.email}`;
+        // add logout small link
+        let logout = document.getElementById('nav-logout');
+        if (!logout) {
+          logout = document.createElement('span');
+          logout.id = 'nav-logout';
+          logout.textContent = 'Logout';
+          logout.style.marginLeft = '8px';
+          logout.addEventListener('click', function () {
+            localStorage.removeItem('user');
+            location.reload();
+          });
+          navWelcome.parentNode.insertBefore(logout, navWelcome.nextSibling);
+        }
+      } else {
+        navWelcome.style.display = 'none';
+        if (navLogin) navLogin.style.display = 'inline-block';
+        const logout = document.getElementById('nav-logout');
+        if (logout) logout.remove();
+      }
+      try { updateStartButton(); } catch (e) { /* ignore */ }
+    } catch (e) {
+      console.error('Navbar update error', e);
+    }
+  }
+
+  updateNavbarForUser();
+
+  // Update landing start button based on login state
+  function updateStartButton() {
+    const btn = document.getElementById('goto-login');
+    if (!btn) return;
+    const raw = localStorage.getItem('user');
+    if (raw) {
+      btn.querySelector('span').textContent = 'Start Testing!';
+      btn.removeEventListener('click', gotoLoginFallback);
+      btn.addEventListener('click', () => { window.location.href = 'getstarted.html'; });
+    } else {
+      btn.querySelector('span').textContent = 'Login';
+      btn.removeEventListener('click', () => { window.location.href = 'getstarted.html'; });
+      btn.addEventListener('click', gotoLoginFallback);
+    }
+  }
+
+  function gotoLoginFallback(e) {
+    e.preventDefault();
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+      loginModal.classList.add('active');
+      const firstInput = loginModal.querySelector('input');
+      if (firstInput) firstInput.focus();
+    } else {
+      window.location.href = 'login.html';
+    }
+  }
+
+  updateStartButton();
 
 // Hide login modal on close button click
 document.getElementById('close-login').addEventListener('click', function() {
@@ -159,8 +247,12 @@ if (loginForm) {
         if (loginError) { loginError.textContent = data.error || 'Login failed'; loginError.style.display = 'block'; }
         return;
       }
-      // success: store user info and close modal
-      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      // success: store user info, update UI and close modal
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        try { updateNavbarForUser(); } catch (e) { /* ignore */ }
+      }
++
       document.getElementById('login-modal').classList.remove('active');
     } catch (err) {
       if (loginError) { loginError.textContent = 'Network error'; loginError.style.display = 'block'; }

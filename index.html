@@ -8,10 +8,16 @@
 </head>
 <body>
     <nav class="navbar">
+      <div class="nav-left">
         <a href="#">HOME</a>
-        <a href="#">LOGIN</a>
+        <a href="#" id="nav-login">LOGIN</a>
         <a href="#">PROFILE</a>
         <a href="#">STATS</a>
+      </div>
+      <div class="nav-right">
+        <!-- nav-welcome is shown when a user is logged in -->
+        <a href="#" id="nav-welcome" style="display:none;"></a>
+      </div>
     </nav>
     
     <!-- Overlay HTML -->
@@ -20,7 +26,7 @@
         <h2>Boost Your Focus </h2>
         <p>Train your brain to stay Sharp, Motivated, and Distraction-free with fun Exercises</p>
         <p>Sharp, Motivated, and Distraction-free with fun Exercises</p>
-        <button class="start-button"><span>Get Started</span></button>
+  <button class="start-button" id="goto-login"><span>Login</span></button>
         
     </div>
 <!-- Counter directly below the button -->
@@ -59,7 +65,7 @@
   <h2>Login</h2>
   <div class="error-message" id="login-error" style="display:none;margin-top:6px;text-align:center;">something went wrong, try again</div>
     <form id="login-form">
-      <label for="username">Username</label>
+      <label for="username">Email</label>
       <input type="text" id="username" name="username" autocomplete="username" required>
       <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="current-password" required>
