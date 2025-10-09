@@ -52,7 +52,7 @@ function animateCounter(element, start, end, duration) {
 }
 
 if (counterElement) {
-  animateCounter(counterElement, 0, 15, 3000); // 3 seconds
+  animateCounter(counterElement, 0, 1500, 3000); // 3 seconds
 }
 
 // OrbitControls for mouse interaction
