@@ -139,9 +139,33 @@ if (openRegisterBtn) {
     window.location.href = 'register.html';
   });
 }
-const loginBtn=document.querySelector('.login-btn');
-loginBtn.addEventListener('click',(e)=>{
-  e.preventDefault();
-  window.location.href='getstarted.html';
-});
+// Handle login form submit and call backend
+const loginForm = document.getElementById('login-form');
+const loginError = document.getElementById('login-error');
+if (loginForm) {
+  loginForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (loginError) { loginError.style.display = 'none'; }
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (loginError) { loginError.textContent = data.error || 'Login failed'; loginError.style.display = 'block'; }
+        return;
+      }
+      // success: store user info and close modal
+      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      document.getElementById('login-modal').classList.remove('active');
+    } catch (err) {
+      if (loginError) { loginError.textContent = 'Network error'; loginError.style.display = 'block'; }
+      console.error(err);
+    }
+  });
+}
 

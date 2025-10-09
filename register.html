@@ -42,8 +42,8 @@
   </div>
 
   <script>
-    // Simple client-side validation and demo submit
-    document.getElementById('register-form').addEventListener('submit', function (e) {
+    // Client-side validation and POST to backend /api/register
+    document.getElementById('register-form').addEventListener('submit', async function (e) {
       e.preventDefault();
       const email = document.getElementById('reg-email').value.trim();
       const name = document.getElementById('reg-name').value.trim();
@@ -69,9 +69,26 @@
         return;
       }
 
-      // For now, redirect back to the home page and open the login modal
-      window.location.href = 'index.html#login';
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, age, password: pw })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          err.textContent = data.error || 'Registration failed';
+          err.style.display = 'block';
+          return;
+        }
+        // success -> go to home and open login modal
+        window.location.href = 'index.html#login';
+      } catch (error) {
+        console.error(error);
+        err.textContent = 'Network error';
+        err.style.display = 'block';
+      }
     });
-n  </script>
+  </script>
 </body>
 </html>
