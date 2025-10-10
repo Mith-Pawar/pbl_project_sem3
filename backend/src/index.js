@@ -34,6 +34,20 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, time: Date.now() });
 });
 
+// Return user by id (used by frontend to fetch authoritative age from DB)
+app.get('/api/user/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (!id) return res.status(400).json({ ok: false, error: 'Missing id' });
+    const [rows] = await pool.execute('SELECT id, email, name, age FROM users WHERE id = ?', [id]);
+    if (!rows || rows.length === 0) return res.status(404).json({ ok: false, error: 'User not found' });
+    return res.json({ ok: true, user: rows[0] });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ ok: false, error: 'Server error' });
+  }
+});
+
 // Register new user
 app.post('/api/register', async (req, res) => {
   try {

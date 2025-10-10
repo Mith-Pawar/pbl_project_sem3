@@ -27,8 +27,29 @@
   “Your focus determines your reality.” – Qui-Gon Jinn
 </blockquote>
 
-        <button class="button" onclick="location.href='quiz.html'">START QUIZ</button>
+        <button class="button" id="start-quiz">START QUIZ</button>
         <button class="button" onclick="location.href='index.html'">BACK</button>
     </div>
+    <script>
+      document.getElementById('start-quiz').addEventListener('click', async function() {
+        // Require login
+        const raw = localStorage.getItem('user');
+        if (!raw) return window.location.href = 'login.html';
+        const user = JSON.parse(raw);
+        try {
+          const res = await fetch(`/api/user/${user.id}`);
+          if (!res.ok) return alert('Failed to fetch user info');
+          const data = await res.json();
+          const age = Number(data.user.age);
+          if (age >= 8 && age <= 12) window.location.href = '8_12.html';
+          else if (age >= 13 && age <= 18) window.location.href = '13_18.html';
+          else if (age > 18) window.location.href = '18+.html';
+          else alert('No quiz available for your age');
+        } catch (err) {
+          console.error(err);
+          alert('Network error');
+        }
+      });
+    </script>
 </body>
 </html>
