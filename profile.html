@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle" />
+</head>
+<body>
+
+  
+    <form>
+        <h2>User Profile</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="5" max="120" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+
+        <button type="submit">Save Profile</button>
+    </form>
+
+   
+    <div class="right-container">
+
+        <div class="right-top">
+            <div class="focusstats">
+                <h2>Focus Stats</h2>
+                <p>Focus Time: <span id="focus-time">0</span> minutes</p>
+                <p>Quiz Completed: <span id="quiz-completed">0</span></p>
+                <p>Average Score: <span id="average-score">0</span></p>
+            </div>
+
+            <div class="mood-tracker">
+                <h2>Mood Tracker</h2>
+                <p>Mood: <span id="mood">😊</span></p>
+                <div class="mood-options">
+                    <button type="button" onclick="setMood('😊')">😊</button>
+                    <button type="button" onclick="setMood('😐')">😐</button>
+                    <button type="button" onclick="setMood('😞')">😞</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="motivation-section">
+            <h2><pre>"It is those who concentrates on but one thing at a time who advance in this world.
+The great man or woman is the one who never steps outside his or her specialty or foolishly
+dissipates his or her individuality.
+-Og Mandino"</pre></h2>
+        </div>
+
+        
+      
+            <button id="logout-button">Logout</button>
+        
+
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

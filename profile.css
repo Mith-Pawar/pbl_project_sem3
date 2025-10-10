@@ -1,0 +1,195 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+    gap: 50px;
+}
+
+form {
+    background-color: #1e1e1e;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.15);
+    width: 320px;
+}
+
+form h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #00d4ff;
+    font-size: 24px;
+}
+
+form label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    color: #b0b0b0;
+    font-weight: 500;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #2b2b2b;
+    color: #fff;
+    font-size: 15px;
+}
+
+form input:focus, form textarea:focus {
+    border-color: #00d4ff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+}
+
+form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(120deg, #00d4ff, #0099cc);
+    color: #121212;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background: linear-gradient(120deg, #0099cc, #00d4ff);
+    transform: translateY(-2px);
+}
+
+
+.right-container {
+    display: flex;
+    flex-direction: column;
+    gap: 35px; /* increased spacing for human feel */
+}
+
+/* Top row: Focus Stats + Mood Tracker */
+.right-top {
+    display: flex;
+    gap: 35px; 
+}
+
+/* Cards */
+.focusstats, .mood-tracker, .motivation-section, .logout-section {
+    background: linear-gradient(145deg, #1f1f1f, #232323);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.focusstats:hover, .mood-tracker:hover, .motivation-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+}
+
+.focusstats h2, .mood-tracker h2, .motivation-section h2 {
+    color: #00d4ff;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.focusstats p, .mood-tracker p {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+/* Mood buttons */
+.mood-options button {
+    background-color: #2c2c2c;
+    border: 1px solid #00d4ff;
+    border-radius: 50%;
+    padding: 12px 16px;
+    margin-right: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s ease;
+}
+
+.mood-options button:hover {
+    background-color: #00d4ff;
+    color: #121212;
+    transform: scale(1.1);
+}
+
+/* Motivation */
+.motivation-section pre {
+    white-space: pre-wrap;
+    font-size: 14px;
+    color: #c0c0c0;
+    line-height: 1.5;
+}
+
+/* Logout button */
+.logout-section button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    border: none;
+    background-color: #ff4c4c;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-section button:hover {
+    background-color: #ff2a2a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+    form, .right-container > div, .focusstats, .mood-tracker {
+        width: 90%;
+    }
+    .right-top {
+        flex-direction: column;
+    }
+}
+
+#logout-button {
+    width: auto; 
+    padding: 10px 25px;
+    border-radius: 16px;
+    border: none;
+    background-color: #ff4c4c;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start; 
+}
+
+#logout-button:hover {
+    background-color: #ff2a2a;
+    transform: translateY(-2px);
+}
+
+
+
+
+
