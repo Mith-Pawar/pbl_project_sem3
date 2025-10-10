@@ -63,7 +63,7 @@ let model; // Declare a variable to hold the loaded model
 // Load a GLB model 
 const loader = new GLTFLoader();
 loader.load(
-  './models/cyber_brain_ai.glb',
+  '../models/cyber_brain_ai.glb',
   (gltf) => {
     model = gltf.scene; 
     scene.add(model);

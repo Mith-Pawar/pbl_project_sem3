@@ -15,8 +15,18 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve frontend static files from project root (so visiting http://localhost:3000/ serves index.html)
-app.use(express.static(path.join(__dirname, '..', '..')));
+// Prefer serving the Frontend folder as the site root so paths behave like Live Server.
+const ROOT_DIR = path.join(__dirname, '..', '..');
+const FRONTEND_DIR = path.join(ROOT_DIR, 'Frontend');
+
+// Serve model assets at /models (models are in project-root models/)
+app.use('/models', express.static(path.join(ROOT_DIR, 'models')));
+
+// Serve the Frontend directory as the web root (so / -> Frontend/index.html, /style.css -> Frontend/style.css)
+app.use(express.static(FRONTEND_DIR));
+
+// Fallback: also serve other static files from project root if needed
+app.use(express.static(ROOT_DIR));
 
 const PORT = process.env.PORT || 3000;
 
