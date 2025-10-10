@@ -259,3 +259,42 @@ footer {
     padding: 16px;
   }
 }
+/* Options container (inserted after question) */
+#optionsContainer {
+  display: flex;
+  flex-wrap: wrap;      /* line-break if screen is narrow */
+  gap: 10px 12px;       /* vertical gap 10px, horizontal gap 12px */
+  margin-top: 12px;
+}
+
+/* Each option button */
+.option-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  min-width: 110px;     /* makes buttons more even */
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
+}
+
+.option-btn:hover {
+  transform: translateY(-3px);
+  background: rgba(110,231,183,0.08);
+}
+
+/* Selected / focused state (optional visual) */
+.option-btn:focus,
+.option-btn.active {
+  outline: none;
+  box-shadow: 0 6px 18px rgba(96,165,250,0.08);
+  border-color: rgba(110,231,183,0.35);
+  background: rgba(110,231,183,0.10);
+}
+
+/* Mobile tweak: make buttons full-width on very small screens */
+@media (max-width:420px) {
+  .option-btn { flex: 1 1 100%; min-width: auto; }
+}

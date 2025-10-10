@@ -1,0 +1,58 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Quiz 18+</title>
+    <link rel="stylesheet" href="18+.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Focus & Concentration Quiz (Age 18+)</h1>
+        <p>Check your focus level under pressure</p>
+      </header>
+
+      <div class="card">
+        <div class="question-meta">
+          <span class="q-title">Question <span id="qNo">1</span>/10</span>
+          <span class="timer" id="timer">20s</span>
+        </div>
+
+        <div class="progress"><i id="progress"></i></div>
+        <div class="question-area" id="question">Loading question...</div>
+
+        <input
+          type="text"
+          id="answer"
+          placeholder="Type your answer..."
+          autocomplete="off"
+        />
+        <div class="controls">
+          <button id="nextBtn">Next</button>
+          <button id="skipBtn" class="ghost">Skip</button>
+        </div>
+
+        <div class="results" id="results" style="display: none"></div>
+        <button id="showAnswersBtn" class="ghost" style="display: none">
+          Show Correct Answers
+        </button>
+
+        <div id="modal" class="modal" style="display: none">
+          <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2>Correct Answers</h2>
+            <div id="allAnswers"></div>
+          </div>
+        </div>
+
+        <footer>
+          <p class="small">Designed to test focus under timed pressure.</p>
+          <button id="restartBtn" class="ghost" style="display: none">
+            Restart
+          </button>
+        </footer>
+      </div>
+    </div>
+    <script src="18+.js"></script>
+  </body>
+</html>
