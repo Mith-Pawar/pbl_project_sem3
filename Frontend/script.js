@@ -102,10 +102,15 @@ function animate() {
 animate();
 
 // Show login modal on "LOGIN" click
-document.querySelector('.navbar a:nth-child(2)').addEventListener('click', function(e) {
-  e.preventDefault();
-  document.getElementById('login-modal').classList.add('active');
-});
+const navLoginLink = document.getElementById('nav-login');
+if (navLoginLink) {
+  navLoginLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) loginModal.classList.add('active');
+    else window.location.href = 'login.html';
+  });
+}
 
 // If "Login" button on the landing page is clicked, open the same login modal as the navbar
 const gotoLoginBtn = document.getElementById('goto-login');
