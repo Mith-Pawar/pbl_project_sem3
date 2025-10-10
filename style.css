@@ -12,14 +12,10 @@ body {
 /* Navbar */
 .navbar {
   height: 60px;
-  width: max-content;
-  padding-left: 10px;
-  padding-right: 50px;
+  width: 100%;
   background: linear-gradient(90deg, #0d0d0d, #1a1a1a); /* black navbar */
   display: flex;
-  flex-direction: row;
-  row-gap: 30px;
-  margin-left: auto;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #222;
   position: fixed; /* stays on top */
@@ -32,8 +28,7 @@ body {
 .nav-left, .nav-right {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 90vw;
+
   gap: 12px;
 }
 
