@@ -42,8 +42,8 @@
           const data = await res.json();
           const age = Number(data.user.age);
           if (age >= 8 && age <= 12) window.location.href = '8_12.html';
-          else if (age >= 13 && age <= 18) window.location.href = '13_18.html';
-          else if (age > 18) window.location.href = '18+.html';
+          else if (age >= 13 && age <18) window.location.href = '13_18.html';
+          else if (age >= 18) window.location.href = '18+.html';
           else alert('No quiz available for your age');
         } catch (err) {
           console.error(err);

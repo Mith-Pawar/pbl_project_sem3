@@ -63,6 +63,7 @@ const closeModal = document.getElementById('closeModal');
 const nextBtn = document.getElementById('nextBtn');
 const skipBtn = document.getElementById('skipBtn');
 const restartBtn = document.getElementById('restartBtn');
+const homeBtn = document.getElementById('homeBtn');
 
 let current=0, score=0, timerInt, timeLeft, responses=[];
 
@@ -73,7 +74,7 @@ function startQuiz(){
   document.querySelector('.controls').style.display='flex';
   timerEl.style.display='inline-block';
   showAnswersBtn.style.display='none';
-  restartBtn.style.display='none';
+  document.querySelector('.footer-buttons').style.display='none';
   showQuestion();
 }
 
@@ -138,9 +139,9 @@ function showResult(){
   timerEl.style.display='none';
   progress.style.width='100%';
   results.style.display='block';
-  results.innerHTML=`<div class='row'><span>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
+  results.innerHTML=`<div class='row'><span class='Total_Score'>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
   showAnswersBtn.style.display='inline-block';
-  restartBtn.style.display='block';
+  document.querySelector('.footer-buttons').style.display='block';
 }
 
 showAnswersBtn.onclick = ()=>{
@@ -157,5 +158,6 @@ closeModal.onclick = ()=>{ modal.style.display='none'; }
 nextBtn.onclick = ()=>checkAnswer();
 skipBtn.onclick = ()=>checkAnswer(true);
 restartBtn.onclick = ()=>startQuiz();
+homeBtn.onclick = ()=>window.location.href='../index.html';
 
 startQuiz();
