@@ -113,7 +113,7 @@ function showSubmissionResult(result, score, totalQuestions) {
     const errorMsg = document.createElement('div');
     errorMsg.className = 'quiz-submission-error';
     errorMsg.innerHTML = `
-      <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin: 10px 0;">
+      <div style="background: #transparent; color:rgb(188, 52, 65); padding: 10px; border-radius: 5px; margin: 10px 0;">
         ❌ Failed to save quiz results: ${result.error}
         <br>Your score: ${score}/${totalQuestions} (${scorePercentage}%)
       </div>
