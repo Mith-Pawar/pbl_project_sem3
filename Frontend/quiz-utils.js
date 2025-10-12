@@ -127,8 +127,86 @@ function showSubmissionResult(result, score, totalQuestions) {
   }
 }
 
+/**
+ * Get user's attempt count for a specific quiz type
+ * @param {number} userId - User ID
+ * @param {string} quizType - Quiz type (e.g., 'focus_test_18+')
+ */
+async function getUserAttemptCount(userId, quizType) {
+  try {
+    const response = await fetch(`/api/user/${userId}/attempt-count/${quizType}`);
+    const result = await response.json();
+    
+    if (response.ok && result.ok) {
+      return {
+        success: true,
+        attempt_count: result.attempt_count,
+        next_attempt: result.next_attempt
+      };
+    } else {
+      console.error('Failed to get attempt count:', result.error);
+      return {
+        success: false,
+        error: result.error || 'Failed to get attempt count',
+        attempt_count: 0,
+        next_attempt: 1
+      };
+    }
+  } catch (error) {
+    console.error('Error getting attempt count:', error);
+    return {
+      success: false,
+      error: 'Network error while getting attempt count',
+      attempt_count: 0,
+      next_attempt: 1
+    };
+  }
+}
+
+/**
+ * Initialize 18+ quiz with appropriate questions based on attempt
+ * @param {string} quizType - Quiz type (should be 'focus_test_18+')
+ */
+async function initialize18PlusQuiz(quizType = 'focus_test_18+') {
+  const currentUser = getCurrentUser();
+  if (!currentUser || !currentUser.id) {
+    console.log('User not logged in - using default questions (attempt 1)');
+    return {
+      questions: window.getQuestionsForAttempt ? window.getQuestionsForAttempt(1) : [],
+      attemptNumber: 1,
+      isLoggedIn: false
+    };
+  }
+
+  try {
+    const attemptResult = await getUserAttemptCount(currentUser.id, quizType);
+    const attemptNumber = attemptResult.next_attempt || 1;
+    
+    const questions = window.getQuestionsForAttempt ? window.getQuestionsForAttempt(attemptNumber) : [];
+    
+    console.log(`Loading questions for attempt ${attemptNumber}`, questions.length, 'questions');
+    
+    return {
+      questions: questions,
+      attemptNumber: attemptNumber,
+      isLoggedIn: true,
+      attemptCount: attemptResult.attempt_count || 0
+    };
+  } catch (error) {
+    console.error('Error initializing 18+ quiz:', error);
+    return {
+      questions: window.getQuestionsForAttempt ? window.getQuestionsForAttempt(1) : [],
+      attemptNumber: 1,
+      isLoggedIn: false,
+      error: error.message
+    };
+  }
+}
+
 // Export functions for use in other files
 window.submitQuizAttempt = submitQuizAttempt;
 window.getCurrentUser = getCurrentUser;
 window.calculateTimeTaken = calculateTimeTaken;
 window.showSubmissionResult = showSubmissionResult;
+window.getUserAttemptCount = getUserAttemptCount;
+window.initialize18PlusQuiz = initialize18PlusQuiz;

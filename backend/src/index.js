@@ -220,6 +220,33 @@ app.get('/api/user/:id/stats', async (req, res) => {
   }
 });
 
+// Get user's attempt count for specific quiz type
+app.get('/api/user/:id/attempt-count/:quizType', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const quizType = req.params.quizType;
+    
+    if (!userId || !quizType) {
+      return res.status(400).json({ ok: false, error: 'Missing user ID or quiz type' });
+    }
+
+    const [rows] = await pool.execute(
+      'SELECT COUNT(*) as attempt_count FROM quiz_attempts WHERE user_id = ? AND quiz_type = ?',
+      [userId, quizType]
+    );
+
+    const attemptCount = rows[0]?.attempt_count || 0;
+    return res.json({ 
+      ok: true, 
+      attempt_count: attemptCount,
+      next_attempt: attemptCount + 1
+    });
+  } catch (err) {
+    console.error('Attempt count error:', err);
+    return res.status(500).json({ ok: false, error: 'Server error' });
+  }
+});
+
 // Helper function to update user statistics
 async function updateUserStats(userId, totalQuestions, correctAnswers, scorePercentage, timeTakenSeconds) {
   try {

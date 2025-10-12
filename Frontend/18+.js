@@ -1,158 +1,228 @@
-// script.js
-// Include quiz utilities
-// Add this script tag to 18+.html: <script src="quiz-utils.js"></script>
+// 18+ Focus Test with Dynamic Question Sets Based on Attempts
+// Include quiz utilities and question sets
+// Add these script tags to 18+.html: 
+// <script src="quiz-utils.js"></script>
+// <script src="18plus-questions.js"></script>
 
 // Quiz start time for tracking
 let quizStartTime = Date.now();
 
-const questions=[
+// Global variables
+let questions = [];
+let current = 0;
+let score = 0;
+let responses = [];
+let timerInt;
+let timeLeft;
+let currentAttempt = 1;
+let isLoggedIn = false;
+let selectedAnswer = null;
 
- 
-  
-  {question: "If you pass the second person in a race, what position are you in?",
-    options: ["First", "Second", "Third", "Cannot say"],
-answer:"Second",time:20},
- 
-
- 
-  {
-question: "If 3 cats can catch 3 mice in 3 minutes, how many cats are needed to catch 100 mice in 100 minutes?",
-options: ["3", "9", "100", "6"], 
-answer:"3",time:20
-},
-
-  {question: "If two’s company and three’s a crowd, what are four and five?",
-    options: ["Nine", "A party", "Crowd", "Cannot say"],
-answer:"Nine",time:20},
-
-  {question: "Which one completes the series: O, T, T, F, F, S, S, ?",
-    options: ["E", "O", "N", "S"],
-answer:"E",time:200},
-
-  {question: "A plane crashes on the border of two countries. Where do they bury the survivors?",options: ["In the country where the crash occurred", "In their home country", "Nowhere", "Cannot say"],
-answer:"Nowhere",time:20},
-
-  {question: "Before Mount Everest was discovered, what was the highest mountain on Earth?",
-    options: ["K2", "Mount Everest", "Kangchenjunga", "Lhotse"],
-answer:"Mount Everest",time:20},
-  {
-   question: "I speak without a mouth and hear without ears. I have nobody, but I come alive with wind. What am I?",
-    options: ["Echo", "Shadow", "Whistle", "Cloud"],
-answer:"Echo",time:30
-  },
- {
-question: "A man builds a house with all four sides facing south. A bear walks past the house. What color is the bear?",
-    options: ["White", "Brown", "Black", "Cannot say"],
-    answer: "White",
-    time:20
-},
- 
-  {
-    question: "Find next number: 2, 3, 5, 9, 17, ?",
-    options: ["31", "33", "35", "29"],
-    answer: "33",
-    time: 40
-  },
-  {
-    question: "A rooster lays an egg on a flat roof. Which way does it roll?",
-    options: ["Left", "Right", "Neither", "Cannot say"],
-    answer: "Neither",
-    time: 35
-  }
-];
-
+// DOM elements
 const qEl = document.getElementById('question');
 const ansEl = document.getElementById('answer');
 const timerEl = document.getElementById('timer');
-const qNo = document.getElementById('qNo');
 const progress = document.getElementById('progress');
 const results = document.getElementById('results');
 const showAnswersBtn = document.getElementById('showAnswersBtn');
-const modal = document.getElementById('modal');
 const allAnswers = document.getElementById('allAnswers');
-const closeModal = document.getElementById('closeModal');
-const nextBtn = document.getElementById('nextBtn');
-const skipBtn = document.getElementById('skipBtn');
-const restartBtn = document.getElementById('restartBtn');
-const homeBtn = document.getElementById('homeBtn');
+const qNo = document.getElementById('qNo');
+const optionsContainer = document.getElementById('options-container');
+const optionsEl = document.getElementById('options');
 
-let current=0, score=0, timerInt, timeLeft, responses=[];
+// Initialize quiz when page loads
+document.addEventListener('DOMContentLoaded', async function() {
+  await loadQuiz();
+});
 
-function startQuiz(){
-  current=0; score=0; responses=[];
-  results.style.display='none';
-  ansEl.style.display='block';
-  document.querySelector('.controls').style.display='flex';
-  timerEl.style.display='inline-block';
-  showAnswersBtn.style.display='none';
-  document.querySelector('.footer-buttons').style.display='none';
-  showQuestion();
-}
-
-function showQuestion(){
-  if(current >= questions.length){ showResult(); return; }
-  const q = questions[current];
-  qEl.textContent = q.question;
-  qNo.textContent = current+1;
-  ansEl.value = '';
-  timeLeft = q.time;
-  progress.style.width = `${(current)/questions.length*100}%`;
-  updateTimer();
-  startTimer();
-
-  // Display options if they exist
-  if(q.options){
-    ansEl.style.display='none';
-    let optionHtml = '';
-    q.options.forEach((opt, idx)=>{
-      optionHtml += `<button class='option-btn' data-value='${opt}'>${opt}</button>`;
-    });
-    document.getElementById('optionsContainer')?.remove();
-    const div = document.createElement('div');
-    div.id = 'optionsContainer';
-    div.innerHTML = optionHtml;
-    qEl.insertAdjacentElement('afterend', div);
-
-    document.querySelectorAll('.option-btn').forEach(btn=>{
-      btn.onclick = ()=>checkAnswer(false, btn.dataset.value);
-    });
-  } else {
-    ansEl.style.display='block';
-    document.getElementById('optionsContainer')?.remove();
+async function loadQuiz() {
+  try {
+    // Show loading message
+    qEl.textContent = 'Loading quiz...';
+    
+    // Initialize quiz with appropriate questions based on attempt
+    const quizData = await initialize18PlusQuiz('focus_test_18+');
+    
+    questions = quizData.questions;
+    currentAttempt = quizData.attemptNumber;
+    isLoggedIn = quizData.isLoggedIn;
+    
+    if (questions.length === 0) {
+      qEl.textContent = 'Error loading questions. Please refresh the page.';
+      return;
+    }
+    
+    // Show attempt information
+    if (isLoggedIn) {
+      console.log(`Starting attempt ${currentAttempt} with ${questions.length} questions`);
+    } else {
+      console.log('User not logged in - using default questions');
+    }
+    
+    // Start the quiz
+    showQuestion();
+  } catch (error) {
+    console.error('Error loading quiz:', error);
+    qEl.textContent = 'Error loading quiz. Please refresh the page.';
   }
 }
 
-function startTimer(){
+function showQuestion() {
+  if (current >= questions.length) {
+    showResult();
+    return;
+  }
+  
+  const q = questions[current];
+  qNo.textContent = current + 1;
+  qEl.textContent = q.question;
+  
+  // Reset selected answer
+  selectedAnswer = null;
+  
+  // Clear previous options
+  optionsEl.innerHTML = '';
+  
+  // Check if question has options (multiple choice)
+  if (q.options && q.options.length > 0) {
+    // Show multiple choice options
+    ansEl.style.display = 'none';
+    optionsContainer.style.display = 'block';
+    
+    // Create option buttons
+    q.options.forEach((option, index) => {
+      const optionBtn = document.createElement('button');
+      optionBtn.className = 'option-btn';
+      optionBtn.textContent = option;
+      optionBtn.onclick = () => selectOption(option, optionBtn);
+      optionsEl.appendChild(optionBtn);
+    });
+  } else {
+    // Show text input for questions without options
+    optionsContainer.style.display = 'none';
+    ansEl.style.display = 'block';
+    ansEl.value = '';
+    ansEl.focus();
+    
+    // Add Enter key support for text input
+    ansEl.onkeypress = (e) => {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    };
+  }
+  
+  // Update progress
+  progress.style.width = ((current + 1) / questions.length) * 100 + '%';
+  
+  // Set timer
+  timeLeft = q.time;
+  timerEl.textContent = timeLeft + 's';
+  
+  // Start timer
   clearInterval(timerInt);
-  timerInt = setInterval(()=>{
+  timerInt = setInterval(() => {
     timeLeft--;
-    updateTimer();
-    if(timeLeft <= 0){ clearInterval(timerInt); checkAnswer(true); }
-  },1000);
+    timerEl.textContent = timeLeft + 's';
+    if (timeLeft <= 0) {
+      checkAnswer(true); // Auto-submit when time runs out
+    }
+  }, 1000);
+  
+  // Show controls
+  document.querySelector('.controls').style.display = 'block';
+  results.style.display = 'none';
+  showAnswersBtn.style.display = 'none';
+  document.querySelector('.footer-buttons').style.display = 'none';
+  
+  // Set initial state for Next button
+  const nextBtn = document.getElementById('nextBtn');
+  if (q.options && q.options.length > 0) {
+    // For multiple choice, disable Next button until option is selected
+    nextBtn.disabled = true;
+    nextBtn.style.opacity = '0.5';
+  } else {
+    // For text input, enable Next button
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = '1';
+  }
 }
 
-function updateTimer(){ timerEl.textContent = timeLeft+'s'; }
+function updateTimer() {
+  timerEl.textContent = timeLeft + 's';
+}
 
-function checkAnswer(auto=false, option=null){
+function selectOption(option, button) {
+  // Remove previous selection
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  
+  // Add selection to clicked button
+  button.classList.add('selected');
+  selectedAnswer = option;
+  
+  // Enable next button
+  document.getElementById('nextBtn').disabled = false;
+  document.getElementById('nextBtn').style.opacity = '1';
+}
+
+function checkAnswer(auto = false, option = null) {
   const q = questions[current];
-  const userAns = option || ansEl.value.trim();
-  responses.push({question: q.question, user: userAns || '<em>Skipped</em>', correct: q.answer, isCorrect: !auto && userAns.toLowerCase() === q.answer.toLowerCase()});
-  if(!auto && userAns.toLowerCase() === q.answer.toLowerCase()) score++;
+  let userAns;
+  
+  // Determine user answer based on question type
+  if (q.options && q.options.length > 0) {
+    // Multiple choice question
+    userAns = auto ? null : selectedAnswer;
+  } else {
+    // Text input question
+    userAns = option || ansEl.value.trim();
+  }
+  
+  // Check if answer is correct
+  const isCorrect = !auto && userAns && userAns.toLowerCase() === q.answer.toLowerCase();
+  
+  responses.push({
+    question: q.question,
+    user: userAns || '<em>Skipped</em>',
+    correct: q.answer,
+    isCorrect: isCorrect,
+    questionType: q.options ? 'multiple_choice' : 'text_input'
+  });
+  
+  if (isCorrect) {
+    score++;
+  }
+  
   current++;
   clearInterval(timerInt);
   showQuestion();
 }
 
-async function showResult(){
-  qEl.textContent='Quiz Completed!';
-  ansEl.style.display='none';
-  document.querySelector('.controls').style.display='none';
-  timerEl.style.display='none';
-  progress.style.width='100%';
-  results.style.display='block';
-  results.innerHTML=`<div class='row'><span class='Total_Score'>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
-  showAnswersBtn.style.display='inline-block';
-  document.querySelector('.footer-buttons').style.display='block';
+async function showResult() {
+  qEl.textContent = 'Quiz Completed!';
+  ansEl.style.display = 'none';
+  optionsContainer.style.display = 'none';
+  document.querySelector('.controls').style.display = 'none';
+  timerEl.style.display = 'none';
+  progress.style.width = '100%';
+  results.style.display = 'block';
+  
+  // Show attempt information in results
+  const attemptInfo = isLoggedIn ? ` (Attempt ${currentAttempt})` : ' (Not logged in)';
+  results.innerHTML = `
+    <div class='row'>
+      <span class='Total_Score'>Total Score:</span>
+      <span class='tag ${score > 7 ? 'good' : 'bad'}'>${score}/${questions.length}</span>
+    </div>
+    <div class='attempt-info' style='margin-top: 10px; color: #666; font-size: 14px;'>
+      ${attemptInfo}
+    </div>
+  `;
+  
+  showAnswersBtn.style.display = 'inline-block';
+  document.querySelector('.footer-buttons').style.display = 'block';
   
   // Submit quiz attempt to backend
   const currentUser = getCurrentUser();
@@ -164,7 +234,7 @@ async function showResult(){
       total_questions: questions.length,
       correct_answers: score,
       time_taken_seconds: timeTaken,
-      difficulty_level: 'hard',
+      difficulty_level: currentAttempt === 1 ? 'hard' : currentAttempt === 2 ? 'medium' : 'hard',
       responses: responses
     };
     
@@ -185,20 +255,60 @@ async function showResult(){
     }
   }
 }
-showAnswersBtn.onclick = ()=>{
-  allAnswers.innerHTML='';
-  responses.forEach(r=>{
-    const div=document.createElement('div');
-    div.className='answer-row '+(r.isCorrect?'correct':'wrong');
-    div.innerHTML=`<span><strong>Q:</strong> ${r.question}</span><span><strong>Your:</strong> ${r.user}</span><span><strong>Correct:</strong> ${r.correct}</span>`;
+
+// Show answers functionality
+showAnswersBtn.onclick = () => {
+  allAnswers.innerHTML = '';
+  responses.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'answer-row ' + (r.isCorrect ? 'correct' : 'wrong');
+    
+    let userAnswerDisplay = r.user;
+    if (r.user === '<em>Skipped</em>') {
+      userAnswerDisplay = '<em style="color: #fbbf24;">Skipped</em>';
+    }
+    
+    div.innerHTML = `
+      <div class="question">${r.question}</div>
+      <div class="answers">
+        <div class="user-answer ${r.isCorrect ? 'correct' : 'wrong'}">
+          <strong>Your answer:</strong> ${userAnswerDisplay}
+        </div>
+        <div class="correct-answer">
+          <strong>Correct answer:</strong> ${r.correct}
+        </div>
+        ${r.questionType === 'multiple_choice' ? '<div class="question-type">Type: Multiple Choice</div>' : '<div class="question-type">Type: Text Input</div>'}
+      </div>
+    `;
     allAnswers.appendChild(div);
   });
-  modal.style.display='flex';
-}
-closeModal.onclick = ()=>{ modal.style.display='none'; }
-nextBtn.onclick = ()=>checkAnswer();
-skipBtn.onclick = ()=>checkAnswer(true);
-restartBtn.onclick = ()=>startQuiz();
-homeBtn.onclick = ()=>window.location.href='../index.html';
+  
+  document.getElementById('modal').style.display = 'block';
+};
 
-startQuiz();
+// Close modal functionality
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('modal').onclick = (e) => {
+    if (e.target === document.getElementById('modal')) {
+      document.getElementById('modal').style.display = 'none';
+    }
+  };
+};
+
+// Button event listeners
+document.getElementById('nextBtn').onclick = () => checkAnswer();
+document.getElementById('skipBtn').onclick = () => checkAnswer(true);
+
+// Restart functionality
+document.getElementById('restartBtn').onclick = () => {
+  current = 0;
+  score = 0;
+  responses = [];
+  quizStartTime = Date.now();
+  showQuestion();
+};
+
+// Home button functionality
+document.getElementById('homeBtn').onclick = () => {
+  window.location.href = 'index.html';
+};
