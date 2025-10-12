@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
 
 
 // Your scene setup goes here
@@ -55,8 +55,7 @@ if (counterElement) {
   animateCounter(counterElement, 0, 1500, 3000); // 3 seconds
 }
 
-// OrbitControls for mouse interaction
-const controls = new OrbitControls(camera, renderer.domElement);
+
 
 let model; // Declare a variable to hold the loaded model
 
@@ -96,7 +95,7 @@ function animate() {
     model.rotation.y += 0.0003; 
     model.position.y = heroY + Math.sin(Date.now() * floatSpeed) * floatAmplitude;
   }
-  controls.update();
+  
   renderer.render(scene, camera);
 }
 animate();

@@ -162,12 +162,7 @@ window.onload = async () => {
     delay: 0.3,
     stagger: 0.2
   });
-gsap.from("#logout-button", {
-    duration: 1, x: 500, opacity: 0, 
-});
-gsap.from("#home-button", {
-    duration: 1, y: 500, opacity: 0, 
-}); 
+
 gsap.from(".motivation-section", {
     opacity: 0,
     duration: 1,
@@ -178,4 +173,21 @@ gsap.from(".motivation-section h2", {
     opacity: 0,
     duration: 1,
     delay: 0.3
+});
+
+const SuggestionButton = document.getElementById('Suggestion');
+if (SuggestionButton) {
+  SuggestionButton.addEventListener('click', () => {
+    window.location.href = 'suggestion.html';
+  });
+}
+// Pehle buttons gayab rakho
+gsap.set(".navigation-buttons button", { opacity: 0 });
+
+// Fade-in animation with stagger
+gsap.to(".navigation-buttons button", {
+  opacity: 1,
+  duration: 1,       // har button 1 second me fade-in
+  ease: "power2.inOut",
+  stagger: 0.3       // ek button ke baad 0.3s gap se next fade-in
 });

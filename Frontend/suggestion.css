@@ -1,0 +1,117 @@
+body{
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0; 
+    background-color: black;
+    color: white;
+
+}
+.suggestion{
+    max-width: 830px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    border: 2px solid #00d4ff;
+}
+.suggestion h2{
+    color: #00d4ff;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+.suggestion p{
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+.suggestion ul{
+    list-style-type: disc;
+    padding-left: 20px;
+}
+.suggestion ul li{
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+@media (max-width: 900px) {
+    body {
+        padding: 10px;
+    }
+    .suggestion {
+        padding: 15px;
+    }
+}
+@media (max-width: 600px) {
+    .suggestion {
+        padding: 10px;
+    }
+    .suggestion h2 {
+        font-size: 18px;
+    }
+    .suggestion p, .suggestion ul li {
+        font-size: 14px;
+    }
+}
+pre{
+    white-space: pre-wrap;
+    font-size: 14px;
+    color: white;
+    line-height: 1.5;
+}
+button{
+    background-color: #00d4ff;
+    border: none;
+    color: #121212;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+}
+button:hover{
+    background-color: #00a3cc;
+}
+@media (max-width: 900px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+    .suggestion {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+@media (max-width: 600px) {
+    .suggestion {
+        padding: 10px;
+    }
+    .suggestion h2 {
+        font-size: 18px;
+    }
+    .suggestion p, .suggestion ul li {
+        font-size: 14px;
+    }
+}
+@media (max-width: 400px) {
+    .suggestion h2 {
+        font-size: 16px;
+    }
+    .suggestion p, .suggestion ul li {
+        font-size: 13px;
+    }
+}
+button {
+    transition: all 0.3s ease;
+}
+button:hover {
+    background-color: #00a3cc;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #00d4ff;
+}
+.suggestion h2:nth-of-type(1) { background-color: rgba(0, 212, 255, 0.1); padding: 5px 10px; border-radius: 5px; }
+.suggestion h2:nth-of-type(2) { background-color: rgba(255, 165, 0, 0.1); padding: 5px 10px; border-radius: 5px; }
+.suggestion h2:nth-of-type(3) { background-color: rgba(255, 0, 0, 0.1); padding: 5px 10px; border-radius: 5px; }
