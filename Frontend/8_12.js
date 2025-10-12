@@ -59,7 +59,7 @@ function startQuiz() {
   document.querySelector(".controls").style.display = "flex";
   timerEl.style.display = "inline-block";
   showAnswersBtn.style.display = "none";
-  document.getElementById("restartBtn").style.display = "none";
+  document.querySelector(".footer-buttons").style.display = "none";
   showQuestion();
 }
 function showQuestion() {
@@ -104,18 +104,16 @@ function checkAnswer(auto = false) {
   clearInterval(timerInt);
   showQuestion();
 }
-function showResult() {
-  qEl.textContent = "Quiz Completed!";
-  ansEl.style.display = "none";
-  document.querySelector(".controls").style.display = "none";
-  timerEl.style.display = "none";
-  progress.style.width = "100%";
-  results.style.display = "block";
-  results.innerHTML = `<div class='row'><span>Total Score:</span><span class='tag ${
-    score > 7 ? "good" : "bad"
-  }'>${score}/10</span></div>`;
-  showAnswersBtn.style.display = "inline-block";
-  document.getElementById("restartBtn").style.display = "block";
+function showResult(){
+  qEl.textContent='Quiz Completed!';
+  ansEl.style.display='none';
+  document.querySelector('.controls').style.display='none';
+  timerEl.style.display='none';
+  progress.style.width='100%';
+  results.style.display='block';
+  results.innerHTML=`<div class='row'><span class='Total_Score'>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
+  showAnswersBtn.style.display='inline-block';
+  document.querySelector('.footer-buttons').style.display='block';
 }
 showAnswersBtn.onclick = () => {
   allAnswers.innerHTML = "";
@@ -133,4 +131,5 @@ closeModal.onclick = () => {
 document.getElementById("nextBtn").onclick = () => checkAnswer();
 document.getElementById("skipBtn").onclick = () => checkAnswer(true);
 document.getElementById("restartBtn").onclick = () => startQuiz();
+document.getElementById("homeBtn").onclick = () => window.location.href='../index.html';
 startQuiz();

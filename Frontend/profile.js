@@ -21,5 +21,5 @@ window.onload = () => {
   if (savedMood) showMood(savedMood);
 };
 document.getElementById("logout-button").onclick = function() {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
