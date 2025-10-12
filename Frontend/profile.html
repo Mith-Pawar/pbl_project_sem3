@@ -13,16 +13,13 @@
     <form>
         <h2>User Profile</h2>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+        <input type="text" id="username" name="username" readonly>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" readonly>
 
         <label for="age">Age:</label>
-        <input type="number" id="age" name="age" min="5" max="120" required>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required>
+        <input type="number" id="age" name="age" min="5" max="120" readonly>
 
         <label for="bio">Bio:</label>
         <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself..."></textarea>
@@ -61,8 +58,10 @@ dissipates his or her individuality.
         </div>
 
         
-      
-            <button id="logout-button">Logout</button>
+        <div class="navigation-buttons">
+            <button id="home-button">Home</button>
+            <button id="logout-button" style="display: none;">Logout</button>
+        </div>
         
 
     </div>

@@ -55,6 +55,19 @@ form input:focus, form textarea:focus {
     box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
 }
 
+/* Read-only input styling */
+form input[readonly] {
+    background-color: #1a1a1a;
+    color: #888;
+    cursor: not-allowed;
+    border-color: #444;
+}
+
+form input[readonly]:focus {
+    border-color: #444;
+    box-shadow: none;
+}
+
 form button {
     width: 100%;
     padding: 12px;
@@ -170,23 +183,54 @@ form button:hover {
     }
 }
 
+/* Navigation buttons container */
+.navigation-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Home button styling */
+#home-button {
+    width: auto; 
+    padding: 10px 25px;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(120deg, #00d4ff, #0099cc);
+    color: #121212;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+}
+
+#home-button:hover {
+    background: linear-gradient(120deg, #0099cc, #00d4ff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+}
+
+/* Logout button styling */
 #logout-button {
     width: auto; 
     padding: 10px 25px;
     border-radius: 16px;
     border: none;
-    background-color: #ff4c4c;
+    background: linear-gradient(120deg, #ff4c4c, #ff2a2a);
     color: #fff;
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    align-self: flex-start; 
+    box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
 }
 
 #logout-button:hover {
-    background-color: #ff2a2a;
+    background: linear-gradient(120deg, #ff2a2a, #ff4c4c);
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 76, 76, 0.3);
 }
 
 

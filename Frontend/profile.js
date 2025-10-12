@@ -16,10 +16,98 @@ function showMood(mood) {
   display.textContent = `Today's mood: ${mood}`;
 }
 
-window.onload = () => {
-  const savedMood = localStorage.getItem("userMood");
-  if (savedMood) showMood(savedMood);
-};
-document.getElementById("logout-button").onclick = function() {
+// Fetch user data from backend
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(`/api/user/${userId}`);
+    const data = await response.json();
+    
+    if (data.ok && data.user) {
+      return data.user;
+    } else {
+      console.error('Failed to fetch user data:', data.error);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    return null;
+  }
+}
+
+// Check if user is logged in and update UI accordingly
+async function checkLoginState() {
+  const user = localStorage.getItem('user');
+  const logoutButton = document.getElementById('logout-button');
+  
+  if (user) {
+    // User is logged in - show logout button
+    if (logoutButton) {
+      logoutButton.style.display = 'block';
+    }
+    
+    try {
+      const userData = JSON.parse(user);
+      
+      // Fetch fresh user data from backend
+      const backendUserData = await fetchUserData(userData.id);
+      
+      if (backendUserData) {
+        // Populate read-only fields with backend data
+        document.getElementById('username').value = backendUserData.name || '';
+        document.getElementById('email').value = backendUserData.email || '';
+        document.getElementById('age').value = backendUserData.age || '';
+      } else {
+        // Fallback to localStorage data if backend fetch fails
+        document.getElementById('username').value = userData.name || userData.email || '';
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('age').value = userData.age || '';
+      }
+    } catch (e) {
+      console.error('Error parsing user data:', e);
+    }
+  } else {
+    // User is not logged in - hide logout button and clear fields
+    if (logoutButton) {
+      logoutButton.style.display = 'none';
+    }
+    
+    // Clear all fields when not logged in
+    document.getElementById('username').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('age').value = '';
+  }
+}
+
+// Handle logout functionality
+function handleLogout() {
+  // Clear user data from localStorage
+  localStorage.removeItem('user');
+  
+  // Redirect to home page
   window.location.href = "index.html";
 }
+
+// Handle home button click
+function handleHome() {
+  window.location.href = "index.html";
+}
+
+window.onload = async () => {
+  const savedMood = localStorage.getItem("userMood");
+  if (savedMood) showMood(savedMood);
+  
+  // Check login state and update UI
+  await checkLoginState();
+  
+  // Add event listeners
+  const logoutButton = document.getElementById("logout-button");
+  const homeButton = document.getElementById("home-button");
+  
+  if (logoutButton) {
+    logoutButton.addEventListener('click', handleLogout);
+  }
+  
+  if (homeButton) {
+    homeButton.addEventListener('click', handleHome);
+  }
+};
