@@ -265,7 +265,42 @@ if (loginForm) {
     }
   });
 }
-
-
-
-  
+gsap.from(".navbar", {
+  opacity: 0,
+  y: -50,
+  duration: 1,
+  ease: "power2.out"
+});
+gsap.from(".navbar a", {
+  opacity: 0,
+  y: -20, 
+  duration: 1,
+  ease: "power2.out",
+  stagger: 0.4
+});
+gsap.from(".overlay", {
+  opacity: 0,
+  duration: 1,
+  delay: 0.3
+});
+gsap.from(".overlay h1,h2", {
+  opacity: 0,
+  y: -50,
+  duration: 1,
+  ease: "power2.out",
+  stagger: 0.4
+});
+gsap.from(".overlay p", {
+  opacity: 0,
+  y: -50,
+  duration: 1,
+  ease: "power2.out",
+  stagger: 0.4
+});
+gsap.from("#goto-login", {
+  opacity: 0,
+  y: -50,
+  duration: 1,
+  ease: "power2.out",
+  stagger: 0.4
+});
