@@ -111,3 +111,71 @@ window.onload = async () => {
     homeButton.addEventListener('click', handleHome);
   }
 };
+  gsap.from("form", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3,
+    stagger: 1
+  });
+  gsap.from("form h2", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3
+  });
+  gsap.from("form input", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3,
+    stagger: 0.2
+  });
+  
+  gsap.from(".focusstats", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3,
+    stagger: 0.2
+  });
+  gsap.from(".focusstats h2", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3
+  }); 
+  gsap.from(".focusstats p", {
+    opacity: 0,
+    duration: 1,  
+    delay: 0.3,
+    stagger: 0.2
+  });
+  gsap.from(".mood-tracker", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3
+  });
+  gsap.from(".mood-tracker h2", {
+    opacity: 0,
+    duration: 1,  
+    delay: 0.3
+  });
+  gsap.from(".mood-options", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3,
+    stagger: 0.2
+  });
+gsap.from("#logout-button", {
+    duration: 1, x: 500, opacity: 0, 
+});
+gsap.from("#home-button", {
+    duration: 1, y: 500, opacity: 0, 
+}); 
+gsap.from(".motivation-section", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3
+});
+
+gsap.from(".motivation-section h2", {
+    opacity: 0,
+    duration: 1,
+    delay: 0.3
+});
