@@ -1,3 +1,4 @@
+
 body{
     background-color: black;
 }
@@ -26,8 +27,8 @@ h4{
     font-size: 25px;
 }
 button{
-    background-color: cyan;
-    border-radius: 10px;
+    background: linear-gradient(120deg, #00d4ff, #0099cc);
+    border-radius: 13px;
     font-size: 20px;
     margin-left: 45%;
     transform: translateY(-10%);
@@ -36,9 +37,10 @@ button{
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s ease;
-    &:hover{
-        background-color: #00b8e6;
-        transform: translateY(-2px);
-    }
     
+}
+button:hover{
+    background: linear-gradient(120deg, #0099cc, #00d4ff);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
 }

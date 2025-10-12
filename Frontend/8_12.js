@@ -1,3 +1,9 @@
+// Include quiz utilities
+// Add this script tag to 8_12.html: <script src="quiz-utils.js"></script>
+
+// Quiz start time for tracking
+let quizStartTime = Date.now();
+
 const questions = [
   { 
     question: "How many words are in this sentence?:    Read this sentence once before you answer", answer: "9", time: 10 
@@ -104,7 +110,7 @@ function checkAnswer(auto = false) {
   clearInterval(timerInt);
   showQuestion();
 }
-function showResult(){
+async function showResult(){
   qEl.textContent='Quiz Completed!';
   ansEl.style.display='none';
   document.querySelector('.controls').style.display='none';
@@ -114,6 +120,37 @@ function showResult(){
   results.innerHTML=`<div class='row'><span class='Total_Score'>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
   showAnswersBtn.style.display='inline-block';
   document.querySelector('.footer-buttons').style.display='block';
+  
+  // Submit quiz attempt to backend
+  const currentUser = getCurrentUser();
+  if (currentUser && currentUser.id) {
+    const timeTaken = calculateTimeTaken(quizStartTime);
+    const quizData = {
+      user_id: currentUser.id,
+      quiz_type: 'focus_test_8_12',
+      total_questions: questions.length,
+      correct_answers: score,
+      time_taken_seconds: timeTaken,
+      difficulty_level: 'medium',
+      responses: responses
+    };
+    
+    const result = await submitQuizAttempt(quizData);
+    showSubmissionResult(result, score, questions.length);
+  } else {
+    console.log('User not logged in - quiz results not saved');
+    // Show message that user needs to login to save results
+    const loginMsg = document.createElement('div');
+    loginMsg.innerHTML = `
+      <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin: 10px 0;">
+        ⚠️ Please login to save your quiz results and track your progress!
+      </div>
+    `;
+    const resultsEl = document.querySelector('.results');
+    if (resultsEl && resultsEl.parentNode) {
+      resultsEl.parentNode.insertBefore(loginMsg, resultsEl.nextSibling);
+    }
+  }
 }
 showAnswersBtn.onclick = () => {
   allAnswers.innerHTML = "";
