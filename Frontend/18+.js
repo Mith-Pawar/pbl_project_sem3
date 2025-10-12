@@ -143,7 +143,7 @@ function showResult(){
   timerEl.style.display='none';
   progress.style.width='100%';
   results.style.display='block';
-  results.innerHTML=`<div class='row'><span>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
+  results.innerHTML=`<div class='row'><span class='Total_Score'>Total Score:</span><span class='tag ${score>7?'good':'bad'}'>${score}/10</span></div>`;
   showAnswersBtn.style.display='inline-block';
   restartBtn.style.display='block';
 }
