@@ -56,6 +56,8 @@ async function checkLoginState() {
         document.getElementById('username').value = backendUserData.name || '';
         document.getElementById('email').value = backendUserData.email || '';
         document.getElementById('age').value = backendUserData.age || '';
+        // Fetch and display user statistics (focus time, attempts, avg score, best score)
+        fetchUserStats(backendUserData.id).catch(err => console.error(err));
       } else {
         // Fallback to localStorage data if backend fetch fails
         document.getElementById('username').value = userData.name || userData.email || '';
@@ -75,6 +77,71 @@ async function checkLoginState() {
     document.getElementById('username').value = '';
     document.getElementById('email').value = '';
     document.getElementById('age').value = '';
+  }
+}
+
+// Fetch user statistics from backend and update the DOM
+async function fetchUserStats(userId) {
+  try {
+    const res = await fetch(`/api/user/${userId}/stats`);
+    const data = await res.json();
+    if (!data.ok) {
+      console.warn('No stats available for user', data.error);
+      return null;
+    }
+
+    // Prefer structured user_stats row if present
+    const stats = data.stats || null;
+    const quizSummary = data.quiz_summary || [];
+
+    // Compute fallback aggregated values if stats row missing
+    let totalTimeSeconds = 0;
+    let totalAttempts = 0;
+    let avgScore = 0;
+    let bestScore = 0;
+
+    if (stats) {
+      totalTimeSeconds = stats.total_time_spent_seconds || 0;
+      totalAttempts = stats.total_attempts || 0;
+      avgScore = stats.average_score != null ? Number(stats.average_score) : 0;
+      bestScore = stats.best_score != null ? Number(stats.best_score) : 0;
+    } else if (quizSummary.length > 0) {
+      // aggregate across quiz types
+      let sumAttempts = 0;
+      let weightedAvgSum = 0; // avg * attempts
+      let maxScore = 0;
+      for (const q of quizSummary) {
+        const attempts = Number(q.total_attempts) || 0;
+        const a = Number(q.avg_score) || 0;
+        const b = Number(q.best_score) || 0;
+        sumAttempts += attempts;
+        weightedAvgSum += a * attempts;
+        if (b > maxScore) maxScore = b;
+      }
+      totalAttempts = sumAttempts;
+      avgScore = sumAttempts > 0 ? (weightedAvgSum / sumAttempts) : 0;
+      bestScore = maxScore;
+      totalTimeSeconds = 0; // no reliable time info in summary
+    }
+
+    // Convert totalTimeSeconds to minutes (rounded)
+    const totalMinutes = Math.round((totalTimeSeconds || 0) / 60);
+
+    // Update DOM — note some element ids in the HTML include spaces, so use attribute selector
+    const focusEl = document.getElementById('focus-time');
+    const attemptsEl = document.querySelector('[id="Attempts taken"]') || document.getElementById('Attempts taken');
+    const avgEl = document.getElementById('average-score');
+    const bestEl = document.querySelector('[id="Best score"]') || document.getElementById('Best score');
+
+    if (focusEl) focusEl.textContent = totalMinutes;
+    if (attemptsEl) attemptsEl.textContent = totalAttempts;
+    if (avgEl) avgEl.textContent = Number(avgScore).toFixed(2);
+    if (bestEl) bestEl.textContent = Number(bestScore).toFixed(2);
+
+    return { totalMinutes, totalAttempts, avgScore, bestScore };
+  } catch (err) {
+    console.error('Error fetching user stats:', err);
+    return null;
   }
 }
 
